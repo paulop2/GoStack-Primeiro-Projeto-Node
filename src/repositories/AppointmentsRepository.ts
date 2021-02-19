@@ -1,8 +1,11 @@
-import { isEqual } from 'date-fns'
-import Appointment from '../models/Appointment'
-
+import { isEqual } from 'date-fns';
+import Appointment from '../models/Appointment';
+interface CreateAppointmentDTO {
+  provider: String;
+  date: Date;
+}
 class AppointmentsRepository {
-  private appointments: Appointment[];
+  private appointments: Appointment[];// private => não acessível fora da classe
 
   constructor() {
     this.appointments = []
@@ -12,7 +15,7 @@ class AppointmentsRepository {
     return this.appointments;
   }
 
-  public findByDate (date: Date):  Appointment | null {
+  public findByDate(date: Date): Appointment | null {
     const findAppointment = this.appointments.find(appointment =>
       isEqual(date, appointment.date),
     );
@@ -20,12 +23,12 @@ class AppointmentsRepository {
     return findAppointment || null;
   }
 
-  public create(provider: String, date: Date): Appointment {
-   const appointment = new Appointment(provider, date)
+  public create({ provider, date }: CreateAppointmentDTO): Appointment {
+    const appointment = new Appointment({ provider, date })
 
-   this.appointments.push(appointment);
+    this.appointments.push(appointment);
 
-   return appointment;
+    return appointment;
   }
 }
 
